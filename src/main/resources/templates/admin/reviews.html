@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN TRỊ</p>
+<h1>Kiểm duyệt nhận xét</h1>
+</div>
+<article class="panel" th:each="r : ${reviews}">
+<div class="section-heading">
+<h2 th:text="${r.title}">
+</h2>
+<span class="badge" th:text="${@labels.get(r.status)}">
+</span>
+</div>
+<p th:text="${r.author + ' · ' + r.rating + ' ★'}">
+</p>
+<p class="prewrap" th:text="${r.comment}">
+</p>
+<form th:if="${r.status!='DELETED'}" class="inline-form" th:action="@{/admin/reviews/{id}/moderate(id=${r.id})}" method="post">
+<input type="hidden" name="hide" th:value="${r.status=='VISIBLE'}">
+<input name="reason" required maxlength="1000" placeholder="Lý do xử lý" aria-label="Lý do">
+<button th:text="${r.status=='VISIBLE' ? 'Ẩn nhận xét' : 'Khôi phục'}">
+</button>
+</form>
+</article>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

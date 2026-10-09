@@ -1,0 +1,28 @@
+2026-10-09T01:58:51.951Z  INFO 178 --- [QuanLyPhongTro] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-09T01:58:52.114Z  INFO 178 --- [QuanLyPhongTro] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetails
+2026-10-09T01:58:52.144Z  INFO 178 --- [QuanLyPhongTro] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page template: index
+2026-10-09T01:58:52.202Z  INFO 178 --- [QuanLyPhongTro] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-09T01:58:52.203Z  INFO 178 --- [QuanLyPhongTro] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-09T01:58:52.204Z  INFO 178 --- [QuanLyPhongTro] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-10-09T01:58:52.225Z  INFO 178 --- [QuanLyPhongTro] [           main] com.quanlyphongtro.ApplicationFlowTest   : Started ApplicationFlowTest in 0.666 seconds (process running for 5.781)
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.770 s -- in com.quanlyphongtro.ApplicationFlowTest
+[INFO] Running com.quanlyphongtro.BusinessRulesTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.quanlyphongtro.BusinessRulesTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ quanlyphongtro ---
+[INFO] Building jar: /workspace/scratch/8374dce1b7a5/work/QuanLyPhongTro/target/quanlyphongtro-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ quanlyphongtro ---
+[INFO] Replacing main artifact /workspace/scratch/8374dce1b7a5/work/QuanLyPhongTro/target/quanlyphongtro-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /workspace/scratch/8374dce1b7a5/work/QuanLyPhongTro/target/quanlyphongtro-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.880 s
+[INFO] Finished at: 2026-10-09T01:58:58Z
+[INFO] ------------------------------------------------------------------------

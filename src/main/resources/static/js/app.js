@@ -1,0 +1,5 @@
+document.querySelectorAll('[data-confirm]').forEach(f=>f.addEventListener('submit',e=>{if(!confirm(f.dataset.confirm))e.preventDefault()}));
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{const url=new URL(location.href);url.searchParams.set('page',b.dataset.page);location.assign(url)}));
+document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>history.length>1?history.back():location.assign('/')));
+const search=document.querySelector('[data-table-search]');if(search)search.addEventListener('input',()=>{document.querySelectorAll('tbody tr').forEach(r=>r.hidden=!r.textContent.toLocaleLowerCase('vi').includes(search.value.toLocaleLowerCase('vi')))});
+const files=document.getElementById('room-files');if(files){let urls=[];files.addEventListener('change',()=>{urls.forEach(URL.revokeObjectURL);urls=[];const out=document.getElementById('file-preview');out.replaceChildren();for(const f of files.files){if(!['image/jpeg','image/png'].includes(f.type))continue;const img=document.createElement('img');img.alt='Ảnh xem trước';img.src=URL.createObjectURL(f);urls.push(img.src);out.append(img)}})}

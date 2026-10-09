@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="panel narrow">
+<h1>Đánh giá trải nghiệm thuê</h1>
+<p class="muted">Nhận xét của người đã thuê giúp mọi người chọn nơi ở phù hợp.</p>
+<form th:action="@{/tenant/tenancies/{id}/review(id=${tenancyId})}" th:object="${form}" method="post">
+<div class="notice danger" th:if="${#fields.hasAnyErrors()}">
+<p th:each="e : ${#fields.allErrors()}" th:text="${e}">
+</p>
+</div>
+<label>Số sao<select th:field="*{rating}">
+<option th:each="v : ${#numbers.sequence(1,5)}" th:value="${v}" th:text="${v + ' ★'}">
+</option>
+</select>
+</label>
+<label>Nhận xét<textarea th:field="*{comment}" rows="6" maxlength="2000" required>
+</textarea>
+</label>
+<button>Lưu đánh giá</button>
+</form>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

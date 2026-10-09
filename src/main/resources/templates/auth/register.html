@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<section class="auth-shell">
+<div class="auth-intro">
+<p class="eyebrow">BẮT ĐẦU CÙNG TRỌ VIỆT</p>
+<h1>Không gian mới.<br>Hành trình mới.</h1>
+<p>Tạo tài khoản người tìm thuê hoặc chủ trọ để bắt đầu.</p>
+</div>
+<div class="panel">
+<h2>Đăng ký tài khoản</h2>
+<form th:action="@{/auth/register}" th:object="${form}" method="post">
+<div class="notice danger" th:if="${#fields.hasAnyErrors()}">
+<p th:each="e : ${#fields.allErrors()}" th:text="${e}">
+</p>
+</div>
+<label>Họ tên<input type="text" th:field="*{fullName}" required maxlength="120">
+<small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
+</small>
+</label>
+<label>Email<input type="email" th:field="*{email}" required autocomplete="username" maxlength="254">
+<small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+</small>
+</label>
+<label>Mật khẩu<input type="password" th:field="*{password}" required minlength="10" maxlength="64" autocomplete="new-password">
+<small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+</small>
+</label>
+<small>10–64 ký tự, tối đa 72 byte UTF-8.</small>
+<label>Bạn muốn<select th:field="*{role}">
+<option value="TENANT">Tìm phòng để thuê</option>
+<option value="LANDLORD">Đăng phòng cho thuê</option>
+</select>
+</label>
+<button class="full">Tạo tài khoản</button>
+</form>
+<p class="muted">Đã có tài khoản? <a th:href="@{/auth/login}">Đăng nhập</a>
+</p>
+</div>
+</section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

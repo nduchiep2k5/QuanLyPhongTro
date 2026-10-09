@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="section-heading page-heading">
+<div>
+<p class="eyebrow">KHÔNG GIAN CHỦ TRỌ</p>
+<h1>Phòng &amp; bài đăng</h1>
+</div>
+<a class="button" th:href="@{/landlord/rooms/new}">+ Thêm phòng</a>
+</div>
+<div class="empty" th:if="${rooms.isEmpty()}">Chưa có phòng. Tạo phòng đầu tiên để bắt đầu.</div>
+<article class="panel manage-room" th:each="r : ${rooms}">
+<div class="section-heading">
+<div>
+<h2 th:text="${r.title}">
+</h2>
+<p class="muted" th:text="${r.addressLine + ', ' + r.ward}">
+</p>
+<div class="tags">
+<span th:text="${@labels.get(r.roomStatus)}">
+</span>
+<span th:text="${@labels.get(r.listingStatus)}">
+</span>
+<span th:text="${r.visible ? 'Đang bật hiển thị' : 'Đang ẩn'}">
+</span>
+</div>
+</div>
+<strong class="price" th:text="${#numbers.formatDecimal(r.monthlyRent,0,'COMMA',0,'POINT') + ' ₫/tháng'}">
+</strong>
+</div>
+<p class="notice" th:if="${r.moderationReason != null and !r.moderationReason.isEmpty()}" th:text="${r.moderationReason}">
+</p>
+<div class="actions">
+<a class="button secondary" th:href="@{/rooms/{id}(id=${r.id})}">Xem trước</a>
+<a class="button secondary" th:if="${r.roomStatus!='ARCHIVED' and r.roomStatus!='RESERVED' and r.roomStatus!='OCCUPIED' and r.listingStatus!='BLOCKED'}" th:href="@{/landlord/rooms/{id}/edit(id=${r.id})}">Sửa nội dung</a>
+<form th:action="@{/landlord/rooms/{id}/action(id=${r.id})}" method="post">
+<select name="action" aria-label="Thao tác phòng">
+<option value="submit" th:if="${r.listingStatus=='DRAFT' or r.listingStatus=='REJECTED'}">Gửi duyệt</option>
+<option value="show" th:if="${r.listingStatus=='APPROVED' and r.roomStatus=='AVAILABLE'}">Hiện bài đăng</option>
+<option value="hide">Ẩn bài đăng</option>
+<option value="withdraw" th:if="${r.listingStatus=='PENDING_REVIEW'}">Rút bài về nháp</option>
+<option value="maintenance" th:if="${r.roomStatus=='AVAILABLE'}">Đưa vào bảo trì</option>
+<option value="available" th:if="${r.roomStatus=='MAINTENANCE'}">Đánh dấu phòng trống</option>
+<option value="archive" th:if="${r.roomStatus=='AVAILABLE' or r.roomStatus=='MAINTENANCE'}">Lưu trữ phòng</option>
+<option value="restore" th:if="${r.roomStatus=='ARCHIVED'}">Khôi phục phòng</option>
+</select>
+<button>Thực hiện</button>
+</form>
+</div>
+</article>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

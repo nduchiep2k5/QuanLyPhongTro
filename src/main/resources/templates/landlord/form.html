@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN LÝ PHÒNG</p>
+<h1 th:text="${form.roomId == null ? 'Thêm phòng mới' : 'Cập nhật phòng'}">
+</h1>
+<p class="muted">Nội dung đã duyệt khi sửa sẽ cần kiểm duyệt lại.</p>
+</div>
+<form class="panel" th:action="@{/landlord/rooms/save}" th:object="${form}" method="post" enctype="multipart/form-data">
+<div class="notice danger" th:if="${#fields.hasAnyErrors()}">
+<p th:each="e : ${#fields.allErrors()}" th:text="${e}">
+</p>
+</div>
+<input type="hidden" th:field="*{roomId}">
+<input type="hidden" th:field="*{version}">
+<input type="hidden" th:field="*{roomVersion}">
+<h2>Thông tin phòng vật lý</h2>
+<div class="form-grid">
+<label>Mã phòng<input type="text" th:field="*{code}" required maxlength="40">
+<small class="field-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
+</small>
+</label>
+<label>Tỉnh / thành<input type="text" th:field="*{province}" required maxlength="100">
+<small class="field-error" th:if="${#fields.hasErrors('province')}" th:errors="*{province}">
+</small>
+</label>
+<label>Xã / phường<input type="text" th:field="*{ward}" required maxlength="100">
+<small class="field-error" th:if="${#fields.hasErrors('ward')}" th:errors="*{ward}">
+</small>
+</label>
+<label>Địa chỉ cụ thể<input type="text" th:field="*{addressLine}" required maxlength="255">
+<small class="field-error" th:if="${#fields.hasErrors('addressLine')}" th:errors="*{addressLine}">
+</small>
+</label>
+<label>Diện tích (m²)<input type="number" th:field="*{area}" required step="0.01" min="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('area')}" th:errors="*{area}">
+</small>
+</label>
+<label>Số người tối đa<input type="number" th:field="*{maxOccupants}" required min="1" max="100">
+<small class="field-error" th:if="${#fields.hasErrors('maxOccupants')}" th:errors="*{maxOccupants}">
+</small>
+</label>
+<label>Vĩ độ (tùy chọn)<input type="number" th:field="*{latitude}" step="0.000001" min="-90" max="90">
+<small class="field-error" th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">
+</small>
+</label>
+<label>Kinh độ (tùy chọn)<input type="number" th:field="*{longitude}" step="0.000001" min="-180" max="180">
+<small class="field-error" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">
+</small>
+</label>
+<label>Loại phòng<select th:field="*{categoryId}" required>
+<option value="">Chọn loại phòng</option>
+<option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name + (c.active ? '' : ' (ngừng dùng)')}">
+</option>
+</select>
+</label>
+</div>
+<h2>Nội dung bài đăng</h2>
+<label>Tiêu đề<input type="text" th:field="*{title}" required maxlength="180">
+<small class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+</small>
+</label>
+<label>Mô tả<textarea th:field="*{description}" rows="6" required maxlength="10000">
+</textarea>
+</label>
+<div class="form-grid">
+<label>Giá thuê (₫/tháng)<input type="number" th:field="*{monthlyRent}" required min="0.01" step="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('monthlyRent')}" th:errors="*{monthlyRent}">
+</small>
+</label>
+<label>Tiền cọc (₫)<input type="number" th:field="*{deposit}" required min="0" step="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('deposit')}" th:errors="*{deposit}">
+</small>
+</label>
+<label>Giá điện (₫/kWh)<input type="number" th:field="*{electricityUnitPrice}" required min="0" step="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('electricityUnitPrice')}" th:errors="*{electricityUnitPrice}">
+</small>
+</label>
+<label>Đơn giá nước (₫)<input type="number" th:field="*{waterUnitPrice}" required min="0" step="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('waterUnitPrice')}" th:errors="*{waterUnitPrice}">
+</small>
+</label>
+<label>Phí dịch vụ (₫/tháng)<input type="number" th:field="*{serviceFee}" required min="0" step="0.01">
+<small class="field-error" th:if="${#fields.hasErrors('serviceFee')}" th:errors="*{serviceFee}">
+</small>
+</label>
+<label>Ngày có thể nhận phòng<input type="date" th:field="*{availableFrom}" required>
+<small class="field-error" th:if="${#fields.hasErrors('availableFrom')}" th:errors="*{availableFrom}">
+</small>
+</label>
+<label>Cách tính nước<select th:field="*{waterBillingMethod}">
+<option value="PER_M3">Theo m³</option>
+<option value="PER_PERSON">Theo người/tháng</option>
+</select>
+</label>
+</div>
+<h3>Tiện ích</h3>
+<div class="check-grid">
+<label class="check" th:each="a : ${amenities}">
+<input type="checkbox" th:field="*{amenityIds}" th:value="${a.id}">
+<span th:text="${a.name + (a.active ? '' : ' (ngừng dùng)')}">
+</span>
+</label>
+</div>
+<h3>Hình ảnh</h3>
+<label>Thêm ảnh JPEG/PNG<input type="file" name="files" accept="image/jpeg,image/png" multiple id="room-files">
+</label>
+<small>Tối đa 10 ảnh/phòng, mỗi ảnh tối đa 5 MB. Ảnh đầu tiên là ảnh bìa.</small>
+<div class="preview" id="file-preview">
+</div>
+<div class="actions">
+<button>Lưu phòng</button>
+<a class="button secondary" th:href="@{/landlord/rooms}">Quay lại</a>
+</div>
+</form>
+<section class="panel" th:if="${!existingImages.isEmpty()}">
+<h3>Ảnh hiện tại</h3>
+<div class="image-manage">
+<div th:each="im : ${existingImages}">
+<img th:src="@{/images/{id}(id=${im.id})}" th:alt="${im.altText}">
+<form th:action="@{/landlord/images/{id}/delete(id=${im.id})}" method="post" data-confirm="Xóa ảnh này? Bài sẽ được đưa về nháp.">
+<button class="danger-button">Xóa ảnh</button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

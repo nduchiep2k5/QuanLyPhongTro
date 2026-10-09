@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trọ Việt · Tìm nơi ở, an tâm mỗi ngày</title>
+<link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<header th:fragment="header">
+<div class="nav container">
+<a class="brand" th:href="@{/}">
+<span class="brand-icon">⌂</span> trọ<span>việt</span>
+</a>
+<nav aria-label="Điều hướng">
+<a th:href="@{/rooms}">Tìm phòng</a>
+<th:block th:if="${me != null}">
+<a th:href="@{/dashboard}">Không gian của tôi</a>
+<a th:href="@{/profile}" th:text="${me.fullName}">
+</a>
+<form th:action="@{/auth/logout}" method="post">
+<button class="link" type="submit">Đăng xuất</button>
+</form>
+</th:block>
+<th:block th:if="${me == null}">
+<a th:href="@{/auth/login}">Đăng nhập</a>
+<a class="button small" th:href="@{/auth/register}">Bắt đầu</a>
+</th:block>
+</nav>
+</div>
+<div class="subnav container" th:if="${me != null}">
+<th:block th:if="${me.role.name() == 'TENANT'}">
+<a th:href="@{/tenant/favorites}">Yêu thích</a>
+<a th:href="@{/tenant/requests}">Yêu cầu thuê</a>
+<a th:href="@{/tenant/tenancies}">Hồ sơ thuê</a>
+</th:block>
+<th:block th:if="${me.role.name() == 'LANDLORD'}">
+<a th:href="@{/landlord/rooms}">Phòng &amp; bài đăng</a>
+<a th:href="@{/landlord/requests}">Yêu cầu đến</a>
+<a th:href="@{/landlord/tenancies}">Khách thuê &amp; lịch sử</a>
+</th:block>
+<th:block th:if="${me.role.name() == 'ADMIN'}">
+<a th:href="@{/admin}">Tổng quan</a>
+<a th:href="@{/admin/users}">Tài khoản</a>
+<a th:href="@{/admin/listings}">Kiểm duyệt bài</a>
+<a th:href="@{/admin/reviews}">Nhận xét</a>
+<a th:href="@{/admin/catalog}">Danh mục</a>
+</th:block>
+</div>
+</header>
+<div th:fragment="notices">
+<div class="notice success" role="status" th:if="${success}" th:text="${success}">
+</div>
+</div>
+<footer th:fragment="footer">
+<div class="container">
+<a class="brand" th:href="@{/}">trọ<span>việt</span>
+</a>
+<p>Tìm nơi ở phù hợp. Kết nối người thuê và chủ trọ.</p>
+<small>Đồ án hệ thống quản lý và cho thuê phòng trọ trực tuyến.</small>
+</div>
+</footer>
+</body>
+</html>

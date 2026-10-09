@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">TÀI KHOẢN</p>
+<h1>Hồ sơ cá nhân</h1>
+</div>
+<div class="two-columns">
+<section class="panel">
+<h2>Thông tin của bạn</h2>
+<p class="muted" th:text="${me.email}">
+</p>
+<form th:action="@{/profile}" th:object="${form}" method="post">
+<div class="notice danger" th:if="${#fields.hasAnyErrors()}">
+<p th:each="e : ${#fields.allErrors()}" th:text="${e}">
+</p>
+</div>
+<label>Họ tên<input type="text" th:field="*{fullName}" required maxlength="120">
+<small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
+</small>
+</label>
+<label>Điện thoại liên hệ<input type="text" th:field="*{phone}" maxlength="20">
+<small class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+</small>
+</label>
+<button>Cập nhật hồ sơ</button>
+</form>
+</section>
+<section class="panel">
+<h2>Đổi mật khẩu</h2>
+<form th:action="@{/profile/password}" th:object="${passwordForm}" method="post">
+<label>Mật khẩu hiện tại<input type="password" th:field="*{currentPassword}" required autocomplete="current-password">
+<small class="field-error" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">
+</small>
+</label>
+<label>Mật khẩu mới<input type="password" th:field="*{newPassword}" required minlength="10" maxlength="64" autocomplete="new-password">
+<small class="field-error" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">
+</small>
+</label>
+<small>Sau khi đổi, các phiên đăng nhập được thu hồi.</small>
+<button>Đổi mật khẩu</button>
+</form>
+</section>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

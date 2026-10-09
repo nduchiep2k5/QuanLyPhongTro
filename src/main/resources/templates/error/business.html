@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="panel narrow error-page">
+<p class="eyebrow" th:text="${code}">
+</p>
+<h1>Chưa thể hoàn tất thao tác</h1>
+<p th:text="${message}">
+</p>
+<div class="actions">
+<button type="button" class="secondary" data-back>Quay lại</button>
+<a class="button" th:href="@{/}">Trang chủ</a>
+</div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

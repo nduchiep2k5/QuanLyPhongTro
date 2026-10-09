@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "/",
+    "/rooms",
+    "/rooms/1",
+    "/",
+    "/rooms",
+    "/rooms/1",
+    "/landlord/rooms",
+    "/landlord/rooms/new",
+    "/landlord/rooms/2/edit",
+    "/landlord/requests",
+    "/landlord/tenancies",
+    "/profile",
+    "/admin",
+    "/admin/users",
+    "/admin/listings",
+    "/admin/reviews",
+    "/admin/catalog",
+    "/tenant/favorites",
+    "/tenant/requests",
+    "/tenant/tenancies",
+    "/rooms/2",
+    "/landlord/requests",
+    "/landlord/tenancies",
+    "/tenant/tenancies",
+    "E2E: login → request → accept → receive → review",
+    "/admin",
+    "/admin/users",
+    "/admin/catalog"
+  ],
+  "failures": []
+}

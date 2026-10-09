@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<section class="auth-shell">
+<div class="auth-intro">
+<p class="eyebrow">CHÀO MỪNG TRỞ LẠI</p>
+<h1>Một nơi ở.<br>Nhiều khởi đầu.</h1>
+<p>Đăng nhập để tiếp tục tìm phòng hoặc quản lý không gian cho thuê của bạn.</p>
+</div>
+<div class="panel">
+<h2>Đăng nhập</h2>
+<p class="notice danger" th:if="${param.error}">Email hoặc mật khẩu không hợp lệ.</p>
+<p class="notice" th:if="${param.expired != null or param.blocked != null}">Phiên đăng nhập đã hết hiệu lực. Vui lòng đăng nhập lại.</p>
+<form th:action="@{/auth/login}" method="post">
+<label>Email<input type="email" name="email" autocomplete="username" required maxlength="254">
+</label>
+<label>Mật khẩu<input type="password" name="password" autocomplete="current-password" required>
+</label>
+<button class="full">Đăng nhập →</button>
+</form>
+<p>
+<a th:href="@{/auth/forgot}">Quên mật khẩu?</a>
+</p>
+<p class="muted">Chưa có tài khoản? <a th:href="@{/auth/register}">Đăng ký</a>
+</p>
+</div>
+</section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN TRỊ</p>
+<h1>Kiểm duyệt bài đăng</h1>
+</div>
+<article class="panel" th:each="r : ${rooms}">
+<div class="section-heading">
+<div>
+<h2>
+<a th:href="@{/rooms/{id}(id=${r.id})}" th:text="${r.title}">
+</a>
+</h2>
+<p class="muted" th:text="${r.ownerName}">
+</p>
+</div>
+<span class="badge" th:text="${@labels.get(r.listingStatus)}">
+</span>
+</div>
+<form class="inline-form" th:action="@{/admin/listings/{id}/moderate(id=${r.id})}" method="post">
+<input type="hidden" name="version" th:value="${r.version}">
+<select name="action" aria-label="Quyết định">
+<option value="approve" th:if="${r.listingStatus=='PENDING_REVIEW'}">Duyệt bài</option>
+<option value="reject" th:if="${r.listingStatus=='PENDING_REVIEW'}">Từ chối</option>
+<option value="block" th:if="${r.listingStatus!='BLOCKED' and r.listingStatus!='ARCHIVED'}">Chặn vi phạm</option>
+<option value="unblock" th:if="${r.listingStatus=='BLOCKED'}">Bỏ chặn, duyệt lại</option>
+</select>
+<input name="reason" maxlength="1000" placeholder="Lý do (bắt buộc khi từ chối/chặn)" aria-label="Lý do">
+<button>Ghi nhận</button>
+</form>
+</article>
+<section class="panel">
+<h2>Lịch sử kiểm duyệt</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Thời điểm</th>
+<th>Người xử lý</th>
+<th>Nội dung</th>
+<th>Thao tác</th>
+<th>Lý do</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="e : ${audit}">
+<td th:text="${e.createdAt}">
+</td>
+<td th:text="${e.actor}">
+</td>
+<td th:text="${e.target}">
+</td>
+<td th:text="${e.action}">
+</td>
+<td th:text="${e.reason}">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

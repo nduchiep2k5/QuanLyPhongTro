@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN TRỊ</p>
+<h1>Danh mục hệ thống</h1>
+<p class="muted">Ngừng dùng danh mục sẽ không xóa dữ liệu các phòng hiện có.</p>
+</div>
+<div class="two-columns">
+<section class="panel">
+<h2>Loại phòng</h2>
+<form class="inline-form" th:action="@{/admin/catalog/category}" method="post">
+<input name="name" maxlength="80" required placeholder="Tên mới" aria-label="Tên mới">
+<input type="hidden" name="active" value="true">
+<button>Thêm</button>
+</form>
+<hr>
+<form class="inline-form catalog-row" th:each="c : ${categories}" th:action="@{/admin/catalog/category}" method="post">
+<input type="hidden" name="id" th:value="${c.id}">
+<input name="name" required maxlength="80" th:value="${c.name}" aria-label="Tên danh mục">
+<label class="check">
+<input type="checkbox" name="active" value="true" th:checked="${c.active}">Đang dùng</label>
+<button class="secondary">Lưu</button>
+</form>
+</section>
+<section class="panel">
+<h2>Tiện ích</h2>
+<form class="inline-form" th:action="@{/admin/catalog/amenity}" method="post">
+<input name="name" maxlength="80" required placeholder="Tên mới" aria-label="Tên mới">
+<input type="hidden" name="active" value="true">
+<button>Thêm</button>
+</form>
+<hr>
+<form class="inline-form catalog-row" th:each="c : ${amenities}" th:action="@{/admin/catalog/amenity}" method="post">
+<input type="hidden" name="id" th:value="${c.id}">
+<input name="name" required maxlength="80" th:value="${c.name}" aria-label="Tên danh mục">
+<label class="check">
+<input type="checkbox" name="active" value="true" th:checked="${c.active}">Đang dùng</label>
+<button class="secondary">Lưu</button>
+</form>
+</section>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<article class="room-card" th:fragment="card(r)" xmlns:th="http://www.thymeleaf.org">
+<a class="card-photo" th:href="@{/rooms/{id}(id=${r.id})}">
+<img th:if="${!r.images.isEmpty()}" th:src="@{/images/{id}(id=${r.images[0].id})}" th:alt="${r.title}" loading="lazy">
+<div class="photo-placeholder" th:if="${r.images.isEmpty()}">
+<span>⌂</span>
+<small>Không gian của bạn</small>
+</div>
+<span class="photo-tag" th:text="${r.category}">
+</span>
+</a>
+<div class="card-body">
+<p class="location" th:text="${r.ward + ' · ' + r.province}">
+</p>
+<h3>
+<a th:href="@{/rooms/{id}(id=${r.id})}" th:text="${r.title}">
+</a>
+</h3>
+<p class="price">
+<span th:text="${#numbers.formatDecimal(r.monthlyRent,0,'COMMA',0,'POINT')}">
+</span> ₫ <small>/tháng</small>
+</p>
+<div class="card-meta">
+<span th:text="${r.area + ' m²'}">
+</span>
+<span th:text="${'Tối đa ' + r.maxOccupants + ' người'}">
+</span>
+</div>
+<div class="tags">
+<span th:each="a,st : ${r.amenities}" th:if="${st.index < 3}" th:text="${a}">
+</span>
+</div>
+</div>
+</article>

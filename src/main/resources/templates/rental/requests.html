@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUY TRÌNH THUÊ</p>
+<h1 th:text="${owner ? 'Yêu cầu thuê đến' : 'Yêu cầu đã gửi'}">
+</h1>
+</div>
+<div class="empty" th:if="${rows.isEmpty()}">Chưa có yêu cầu thuê.</div>
+<article class="panel" th:each="r : ${rows}">
+<div class="section-heading">
+<h2 th:text="${r.title}">
+</h2>
+<span class="badge" th:text="${@labels.get(r.status)}">
+</span>
+</div>
+<p th:if="${owner}" th:text="${r.tenantName + (r.tenantPhone != null ? ' · ' + r.tenantPhone : '')}">
+</p>
+<p th:text="${'Ngày dự kiến: ' + r.requestedMoveIn + ' · Giá đã xem: ' + r.rent + ' ₫/tháng'}">
+</p>
+<p class="prewrap muted" th:text="${r.message}">
+</p>
+<p class="notice" th:if="${r.reason}" th:text="${r.reason}">
+</p>
+<div class="actions" th:if="${r.status=='PENDING'}">
+<th:block th:if="${owner}">
+<form th:action="@{/landlord/requests/{id}/decide(id=${r.id})}" method="post" data-confirm="Chấp nhận sẽ giữ phòng cho yêu cầu này và từ chối những yêu cầu còn lại.">
+<input type="hidden" name="accept" value="true">
+<button>Chấp nhận &amp; giữ phòng</button>
+</form>
+<form th:action="@{/landlord/requests/{id}/decide(id=${r.id})}" method="post">
+<input type="hidden" name="accept" value="false">
+<input name="reason" placeholder="Lý do từ chối" required maxlength="1000" aria-label="Lý do từ chối">
+<button class="secondary">Từ chối</button>
+</form>
+</th:block>
+<form th:if="${!owner}" th:action="@{/tenant/requests/{id}/cancel(id=${r.id})}" method="post" data-confirm="Hủy yêu cầu này?">
+<button class="secondary">Hủy yêu cầu</button>
+</form>
+</div>
+<p class="muted" th:if="${!owner and r.status=='ACCEPTED'}">Phòng đã được giữ. Liên hệ chủ trọ nếu cần hủy giữ trước khi nhận phòng.</p>
+</article>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

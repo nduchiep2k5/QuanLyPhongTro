@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="panel narrow">
+<p class="eyebrow">KHÔI PHỤC TÀI KHOẢN</p>
+<h1>Quên mật khẩu?</h1>
+<p>Nhập email để nhận hướng dẫn đặt lại mật khẩu.</p>
+<form th:action="@{/auth/forgot}" method="post">
+<label>Email<input type="email" name="email" required maxlength="254">
+</label>
+<button class="full">Gửi hướng dẫn</button>
+</form>
+<p>
+<a th:href="@{/auth/login}">← Đăng nhập</a>
+</p>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

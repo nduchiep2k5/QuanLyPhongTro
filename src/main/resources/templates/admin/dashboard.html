@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN TRỊ HỆ THỐNG</p>
+<h1>Tổng quan hoạt động</h1>
+<p class="muted">Đếm bản ghi được tạo trong khoảng thời gian, phân nhóm theo trạng thái hiện tại.</p>
+</div>
+<form class="panel inline-form" th:action="@{/admin}" method="get">
+<label>Từ ngày<input type="date" name="from" th:value="${param.from}">
+</label>
+<label>Đến ngày<input type="date" name="to" th:value="${param.to}">
+</label>
+<button>Lọc thống kê</button>
+<a class="button secondary" th:href="@{/admin/report.csv(from=${param.from},to=${param.to})}">Xuất CSV ↓</a>
+</form>
+<div class="stats-grid">
+<div class="panel stat" th:each="s : ${stats}">
+<p th:text="${s.key}">
+</p>
+<strong th:text="${s.value}">
+</strong>
+</div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

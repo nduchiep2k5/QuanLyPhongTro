@@ -1,0 +1,30 @@
+{
+  "java": "21.0.12.1",
+  "maven": "3.9.16",
+  "applicationDatabase": "H2 2.4.240",
+  "suites": [
+    {
+      "suite": "com.quanlyphongtro.ApplicationFlowTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "com.quanlyphongtro.BusinessRulesTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "com.quanlyphongtro.QuanLyPhongTroApplicationTests",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "nativePostgreSQL": "NOT RUN",
+  "migrationSyntaxStatements": 41
+}

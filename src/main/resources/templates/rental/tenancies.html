@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">HỒ SƠ THUÊ</p>
+<h1 th:text="${owner ? 'Khách thuê & lịch sử' : 'Hành trình thuê của tôi'}">
+</h1>
+</div>
+<div class="empty" th:if="${rows.isEmpty()}">Chưa có hồ sơ thuê.</div>
+<article class="panel" th:each="r : ${rows}">
+<div class="section-heading">
+<h2 th:text="${r.title}">
+</h2>
+<span class="badge" th:text="${@labels.get(r.status)}">
+</span>
+</div>
+<p th:if="${owner}" th:text="${r.tenantName + (r.tenantPhone != null ? ' · ' + r.tenantPhone : '')}">
+</p>
+<p class="muted" th:text="${r.address}">
+</p>
+<p th:text="${'Giá đã chốt: ' + r.rent + ' ₫/tháng · Dự kiến: ' + r.plannedStartDate}">
+</p>
+<p th:if="${r.actualStartDate != null}" th:text="${'Ngày nhận: ' + r.actualStartDate + (r.endDate != null ? ' · Kết thúc: ' + r.endDate : '')}">
+</p>
+<div class="actions" th:if="${owner and (r.status=='PENDING_MOVE_IN' or r.status=='ACTIVE')}">
+<form th:action="@{/landlord/tenancies/{id}/action(id=${r.id})}" method="post" data-confirm="Xác nhận cập nhật hồ sơ thuê này?">
+<select name="action" aria-label="Thao tác hồ sơ">
+<option value="receive" th:if="${r.status=='PENDING_MOVE_IN'}">Xác nhận nhận phòng</option>
+<option value="cancel" th:if="${r.status=='PENDING_MOVE_IN'}">Hủy giữ phòng</option>
+<option value="end" th:if="${r.status=='ACTIVE'}">Kết thúc thuê</option>
+</select>
+<label>Ngày thực tế<input type="date" name="date" th:value="${today}">
+</label>
+<input name="reason" maxlength="1000" placeholder="Lý do (bắt buộc khi hủy/kết thúc)" aria-label="Lý do">
+<label class="check">
+<input type="checkbox" name="maintenance" value="true">Đưa phòng vào bảo trì sau kết thúc</label>
+<button>Xác nhận</button>
+</form>
+</div>
+<div class="actions" th:if="${!owner and (r.status=='ACTIVE' or r.status=='COMPLETED')}">
+<a class="button secondary" th:href="@{/tenant/tenancies/{id}/review(id=${r.id})}" th:text="${r.reviewId == null ? 'Viết đánh giá' : 'Sửa đánh giá'}">
+</a>
+<form th:if="${r.reviewId != null}" th:action="@{/tenant/tenancies/{id}/review/delete(id=${r.id})}" method="post" data-confirm="Xóa đánh giá? Bạn sẽ không tạo lại đánh giá cho hồ sơ này.">
+<button class="danger-button">Xóa đánh giá</button>
+</form>
+</div>
+</article>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<section class="hero">
+<div>
+<p class="eyebrow">KHÔNG GIAN NHỎ · CUỘC SỐNG MỚI</p>
+<h1>Nơi bạn gọi là <em>nhà.</em>
+</h1>
+<p>Tìm phòng phù hợp với nhu cầu, kết nối trực tiếp với chủ trọ và theo dõi hành trình thuê trong một nơi.</p>
+<form class="hero-search" th:action="@{/rooms}" method="get">
+<input name="q" aria-label="Tìm phòng" placeholder="Bạn muốn tìm phòng như thế nào?">
+<button>Tìm phòng →</button>
+</form>
+<div class="hero-benefits">
+<span>✓ Chi phí rõ ràng</span>
+<span>✓ Bài đăng được kiểm duyệt</span>
+</div>
+</div>
+<div class="hero-art" aria-hidden="true">
+<div class="sun">
+</div>
+<div class="building">
+<div class="window">
+</div>
+<div class="window">
+</div>
+<div class="window">
+</div>
+<div class="window">
+</div>
+<div class="door">
+</div>
+</div>
+<div class="plant">
+</div>
+<div class="art-note">Một khởi đầu mới<br>
+<strong>đang chờ bạn.</strong>
+</div>
+</div>
+</section>
+<section>
+<div class="section-heading">
+<div>
+<p class="eyebrow">KHÁM PHÁ</p>
+<h2>Phòng trọ đang cho thuê</h2>
+</div>
+<a th:href="@{/rooms}">Xem tất cả →</a>
+</div>
+<div class="room-grid">
+<th:block th:each="r : ${page.content}">
+<article th:replace="~{fragments/card :: card(${r})}">
+</article>
+</th:block>
+</div>
+<div class="empty" th:if="${page.empty}">Chưa có phòng đang công khai. Hãy quay lại sau hoặc đăng nhập để quản lý bài đăng.</div>
+</section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

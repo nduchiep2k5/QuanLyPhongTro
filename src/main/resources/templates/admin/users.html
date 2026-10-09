@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="page-heading">
+<p class="eyebrow">QUẢN TRỊ</p>
+<h1>Tài khoản người dùng</h1>
+</div>
+<label class="search-inline">Tìm trong danh sách<input type="search" data-table-search placeholder="Tên hoặc email">
+</label>
+<div class="panel table-wrap">
+<table>
+<thead>
+<tr>
+<th>Người dùng</th>
+<th>Email</th>
+<th>Vai trò</th>
+<th>Trạng thái</th>
+<th>Thao tác</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="u : ${users}">
+<td th:text="${u.fullName}">
+</td>
+<td th:text="${u.email}">
+</td>
+<td th:text="${@labels.get(u.role.name())}">
+</td>
+<td th:text="${@labels.get(u.status.name())}">
+</td>
+<td>
+<form th:action="@{/admin/users/{id}/status(id=${u.id})}" method="post" data-confirm="Xác nhận thay đổi trạng thái tài khoản?">
+<input type="hidden" name="ban" th:value="${u.status.name()=='ACTIVE'}">
+<button class="secondary small" th:text="${u.status.name()=='ACTIVE' ? 'Khóa' : 'Mở khóa'}">
+</button>
+</form>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

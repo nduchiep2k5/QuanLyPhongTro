@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<section class="page-heading">
+<p class="eyebrow">TÌM NƠI Ở CỦA BẠN</p>
+<h1>Phòng phù hợp, cuộc sống dễ dàng hơn.</h1>
+</section>
+<div class="search-layout">
+<aside class="panel">
+<h3>Bộ lọc</h3>
+<form th:action="@{/rooms}" method="get">
+<label>Từ khóa<input name="q" th:value="${param.q}" placeholder="Tên phòng hoặc địa chỉ">
+</label>
+<label>Tỉnh / thành<input name="province" th:value="${param.province}" placeholder="Ví dụ: Hà Nội">
+</label>
+<label>Xã / phường<input name="ward" th:value="${param.ward}">
+</label>
+<div class="form-grid">
+<label>Giá từ (₫)<input type="number" name="min" min="0" th:value="${param.min}">
+</label>
+<label>Đến (₫)<input type="number" name="max" min="0" th:value="${param.max}">
+</label>
+<label>Diện tích từ (m²)<input type="number" name="minArea" min="0" step="0.01" th:value="${param.minArea}">
+</label>
+<label>Đến (m²)<input type="number" name="maxArea" min="0" step="0.01" th:value="${param.maxArea}">
+</label>
+</div>
+<label>Loại phòng<select name="category">
+<option value="">Tất cả</option>
+<option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}" th:selected="${param.category != null and param.category[0] == c.id.toString()}">
+</option>
+</select>
+</label>
+<p class="label">Tiện ích (có đủ các mục chọn)</p>
+<label class="check" th:each="a : ${amenities}">
+<input type="checkbox" name="amenityIds" th:value="${a.id}" th:checked="${param.amenityIds != null and #arrays.contains(param.amenityIds,a.id.toString())}">
+<span th:text="${a.name}">
+</span>
+</label>
+<label>Sắp xếp<select name="order">
+<option value="newest" th:selected="${param.order == null or param.order[0]=='newest'}">Mới nhất</option>
+<option value="priceAsc" th:selected="${param.order != null and param.order[0]=='priceAsc'}">Giá tăng dần</option>
+<option value="priceDesc" th:selected="${param.order != null and param.order[0]=='priceDesc'}">Giá giảm dần</option>
+<option value="area" th:selected="${param.order != null and param.order[0]=='area'}">Diện tích giảm dần</option>
+</select>
+</label>
+<button class="full">Áp dụng bộ lọc</button>
+<a class="reset" th:href="@{/rooms}">Xóa bộ lọc</a>
+</form>
+</aside>
+<section>
+<p class="muted" th:text="${page.totalElements + ' phòng phù hợp'}">
+</p>
+<div class="room-grid results">
+<th:block th:each="r : ${page.content}">
+<article th:replace="~{fragments/card :: card(${r})}">
+</article>
+</th:block>
+</div>
+<div class="empty" th:if="${page.empty}">Không tìm thấy phòng. Thử mở rộng khoảng giá hoặc bỏ bớt bộ lọc.</div>
+<nav class="pagination" aria-label="Phân trang">
+<button type="button" class="secondary" data-page th:if="${!page.first}" th:attr="data-page=${page.number - 1}">← Trước</button>
+<span th:if="${page.totalPages > 0}" th:text="${(page.number+1) + ' / ' + page.totalPages}">
+</span>
+<button type="button" data-page th:if="${!page.last}" th:attr="data-page=${page.number + 1}">Tiếp →</button>
+</nav>
+</section>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head}">
+</head>
+<body>
+<header th:replace="~{fragments/layout :: header}">
+</header>
+<main class="container">
+<div th:replace="~{fragments/layout :: notices}">
+</div>
+<div class="breadcrumbs">
+<a th:href="@{/rooms}">Tìm phòng</a> / <span th:text="${room.title}">
+</span>
+</div>
+<div class="detail-heading">
+<p class="eyebrow" th:text="${room.category}">
+</p>
+<h1 th:text="${room.title}">
+</h1>
+<p class="muted" th:text="${room.addressLine + ', ' + room.ward + ', ' + room.province}">
+</p>
+<div class="notice" th:if="${!room.publicVisible}">Bản xem trước dành cho chủ trọ / quản trị viên. Bài chưa công khai.</div>
+</div>
+<div class="gallery">
+<img th:each="im : ${room.images}" th:src="@{/images/{id}(id=${im.id})}" th:alt="${im.altText}">
+<div class="photo-placeholder" th:if="${room.images.isEmpty()}">Chưa có ảnh</div>
+</div>
+<div class="detail-layout">
+<section>
+<div class="panel">
+<h2>Thông tin phòng</h2>
+<div class="facts">
+<div>
+<small>Diện tích</small>
+<strong th:text="${room.area + ' m²'}">
+</strong>
+</div>
+<div>
+<small>Số người</small>
+<strong th:text="${room.maxOccupants}">
+</strong>
+</div>
+<div>
+<small>Có thể nhận từ</small>
+<strong th:text="${room.availableFrom}">
+</strong>
+</div>
+</div>
+<p class="prewrap" th:text="${room.description}">
+</p>
+<h3>Tiện ích</h3>
+<div class="tags">
+<span th:each="a : ${room.amenities}" th:text="${a}">
+</span>
+</div>
+<h3>Chi phí công bố</h3>
+<dl class="costs">
+<dt>Tiền cọc</dt>
+<dd th:text="${#numbers.formatDecimal(room.deposit,0,'COMMA',0,'POINT') + ' ₫'}">
+</dd>
+<dt>Điện</dt>
+<dd th:text="${room.electricityUnitPrice + ' ₫/kWh'}">
+</dd>
+<dt>Nước</dt>
+<dd th:text="${room.waterUnitPrice + (room.waterBillingMethod=='PER_M3' ? ' ₫/m³' : ' ₫/người/tháng')}">
+</dd>
+<dt>Phí dịch vụ</dt>
+<dd th:text="${room.serviceFee + ' ₫/tháng'}">
+</dd>
+</dl>
+<a class="button secondary" th:if="${room.latitude != null}" th:href="@{https://www.google.com/maps(q=${room.latitude + ',' + room.longitude})}" target="_blank" rel="noopener noreferrer">Mở vị trí trên bản đồ ↗</a>
+<p class="muted" th:if="${room.latitude == null}">Chưa có tọa độ bản đồ; xem địa chỉ phía trên.</p>
+</div>
+<div class="panel">
+<h2>Đánh giá của người đã thuê</h2>
+<p th:if="${!reviews.isEmpty()}" th:text="${#numbers.formatDecimal(average,1,1) + ' / 5 · ' + reviews.size() + ' đánh giá'}">
+</p>
+<p class="muted" th:if="${reviews.isEmpty()}">Chưa có đánh giá.</p>
+<article class="review" th:each="v : ${reviews}">
+<strong th:text="${v.author}">
+</strong>
+<span class="rating" th:text="${v.rating + ' ★'}">
+</span>
+<p class="prewrap" th:text="${v.comment}">
+</p>
+</article>
+</div>
+</section>
+<aside>
+<div class="panel sticky">
+<p class="price large" th:text="${#numbers.formatDecimal(room.monthlyRent,0,'COMMA',0,'POINT') + ' ₫'}">
+</p>
+<p class="muted">mỗi tháng</p>
+<h3 th:text="${room.ownerName}">
+</h3>
+<p th:if="${room.ownerPhone != null}" th:text="${'Liên hệ: ' + room.ownerPhone}">
+</p>
+<th:block th:if="${me != null and me.role.name()=='TENANT' and room.publicVisible}">
+<form th:action="@{/tenant/favorites/{id}(id=${room.id})}" method="post">
+<button class="secondary full">♡ Lưu yêu thích</button>
+</form>
+<hr>
+<form th:action="@{/tenant/rooms/{id}/requests(id=${room.id})}" method="post">
+<label>Ngày dự kiến nhận<input required type="date" name="requestedMoveIn" th:min="${room.availableFrom}">
+</label>
+<label>Lời nhắn<textarea name="message" maxlength="1000" rows="3" placeholder="Giới thiệu nhu cầu của bạn">
+</textarea>
+</label>
+<button class="full">Gửi yêu cầu thuê</button>
+<small>Chủ trọ sẽ xem và phản hồi. Yêu cầu không phải giao dịch thanh toán.</small>
+</form>
+</th:block>
+<a class="button full" th:if="${me == null and room.publicVisible}" th:href="@{/auth/login}">Đăng nhập để gửi yêu cầu</a>
+</div>
+</aside>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}">
+</footer>
+<script th:src="@{/js/app.js}" defer>
+</script>
+</body>
+</html>
