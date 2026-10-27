@@ -84,7 +84,13 @@ Profile demo dùng hộp thư local: gửi từ trang Quên mật khẩu rồi n
 
 Để dùng email thật, cấu hình `MAIL_MODE=smtp`, `MAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_AUTH`, `SMTP_TLS` và `APP_BASE_URL` của ứng dụng. Không thay đổi SMTP/account email nếu chưa chủ động thiết lập. Nếu mail gửi thất bại, trang vẫn phản hồi chung, log không ghi token/password. SMTP thật chưa được kiểm thử trong bản bàn giao.
 
-## 6. Kiểm thử PostgreSQL thật
+## 6. Chatbot AI
+
+Chatbot ở góc phải các trang: khách hoặc người dùng đăng nhập có thể hỏi cách dùng và tìm phòng bằng tiếng Việt. Tạo API key tại [OpenAI Platform](https://platform.openai.com/api-keys), rồi đặt `OPENAI_API_KEY` vào biến môi trường của Run Configuration hoặc shell để bật. Không nhập khóa vào `.env.example`, Git hoặc trình duyệt. Không cấu hình khóa thì trang vẫn chạy, chatbot báo chưa sẵn sàng. Chatbot dùng OpenAI Responses API với model `gpt-4o-mini`; mỗi câu hỏi gọi API và có phát sinh chi phí. Gói ChatGPT và tín dụng API tính riêng.
+
+Chatbot chỉ đọc tối đa **12 bài công khai mới nhất** (đã duyệt, đang hiện, phòng còn trống, chủ trọ hoạt động). Vì giới hạn này, gợi ý có thể không bao quát; dùng bộ lọc `/rooms` để tìm thêm. Hệ thống không gửi số điện thoại/tên chủ trọ hay hồ sơ thuê lên OpenAI. Câu hỏi và tối đa 8 lượt trò chuyện gần nhất được gửi từ tab trình duyệt tới server/OpenAI, không lưu vào DB; request đặt `store=false`. Đừng nhập mật khẩu hoặc dữ liệu nhạy cảm. Link phòng được server đối chiếu lại với danh sách công khai trước khi hiển thị. Gợi ý AI có thể sai, cần xem lại trang chi tiết và hỏi chủ trọ trước khi quyết định.
+
+## 7. Kiểm thử PostgreSQL thật
 
 Tạo một database test **riêng và mới**, ví dụ `quanlyphongtro_test`, bằng tài khoản đã có quyền. Cấu hình các biến `TEST_DB_URL`, `TEST_DB_USERNAME`, `TEST_DB_PASSWORD` tại môi trường Terminal/Run Configuration riêng. URL phải có tên DB kết thúc `_test`; test resolver từ chối tên khác.
 
@@ -96,7 +102,7 @@ Lệnh này chạy migration và các test kế thừa luồng nghiệp vụ c�
 
 Nếu test PostgreSQL thất bại, giữ log `target/surefire-reports`, không tự bật baseline hoặc sửa checksum để bỏ qua lỗi. Những kiểm tra này chưa được chạy trong môi trường bàn giao; kết quả trên máy bạn mới xác nhận tính tương thích PostgreSQL 18.6.
 
-## 7. Cấu hình an toàn và giới hạn
+## 8. Cấu hình an toàn và giới hạn
 
 - Profile mặc định: Flyway tắt, Hibernate `validate`. Muốn dùng DB hiện tại phải xem schema, sao lưu và thiết kế migration phù hợp trước. Không dùng `ddl-auto=update/create/create-drop` trên DB thật.
 - Profile demo/test được tách biệt. H2 và các biến preview của môi trường kiểm thử không được đóng gói làm cấu hình vận hành.
@@ -107,7 +113,7 @@ Nếu test PostgreSQL thất bại, giữ log `target/surefire-reports`, không 
 - Email đăng nhập và role chưa cho tự đổi. Avatar là trường mở rộng chưa có màn upload. Bản đồ là liên kết mở bằng tọa độ tùy chọn.
 - Kiểm thử browser hiện đã kiểm tra các luồng chính, không phải pentest hoặc kiểm thử tải. Quản lý danh sách dùng cách truy vấn đơn giản phù hợp quy mô đồ án; tối ưu khi dữ liệu lớn là bước sau.
 
-## 8. Tài liệu trong gói
+## 9. Tài liệu trong gói
 
 - `docs/THIET_KE_DA_DUYET.md`: thiết kế Giai đoạn 1.
 - `docs/KIEN_TRUC_VA_NGHIEP_VU.md`: ánh xạ code và các điều chỉnh triển khai.
