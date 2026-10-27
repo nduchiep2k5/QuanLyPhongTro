@@ -59,6 +59,7 @@ public class SecurityConfig {
                         "/js/**",
                         "/demo-assets/**",
                         "/auth/**",
+                        "/api/chat",
                         "/error")
                     .permitAll()
                     .requestMatchers("/admin/**")

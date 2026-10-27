@@ -149,6 +149,23 @@ class ApplicationFlowTest {
   }
 
   @Test
+  void chatRoomCandidatesExcludeHiddenBlockedAndReserved() {
+    assertThat(query.search(null, null, null, null, null, null, null, null, null, "newest", 0)
+            .getContent().stream().map(v -> v.id()))
+        .contains(roomId);
+    listingService.action(roomId, owner.getId(), "hide");
+    assertThat(query.search(null, null, null, null, null, null, null, null, null, "newest", 0)
+            .getContent().stream().map(v -> v.id()))
+        .doesNotContain(roomId);
+    listingService.action(roomId, owner.getId(), "show");
+    var version = listings.findByRoomId(roomId).orElseThrow().getVersion();
+    listingService.moderate(roomId, admin.getId(), "block", "Vi phạm", version);
+    assertThat(query.search(null, null, null, null, null, null, null, null, null, "newest", 0)
+            .getContent().stream().map(v -> v.id()))
+        .doesNotContain(roomId);
+  }
+
+  @Test
   void wrongOwnerAndTenantCannotMutate() {
     Long q = send(tenant);
     assertThatThrownBy(() -> rentals.decide(q, otherOwner.getId(), true, ""))

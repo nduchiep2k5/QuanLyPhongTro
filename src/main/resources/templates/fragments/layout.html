@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trọ Việt · Tìm nơi ở, an tâm mỗi ngày</title>
 <link th:href="@{/css/app.css}" rel="stylesheet">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
 <body>
 <header th:fragment="header">
@@ -53,6 +55,18 @@
 </div>
 </div>
 <footer th:fragment="footer">
+<details class="chat" id="chat">
+<summary aria-label="Mở trợ lý AI">Hỏi Trọ Việt</summary>
+<section class="chat-window" aria-label="Trợ lý AI">
+<div class="chat-heading"><strong>Trợ lý Trọ Việt</strong><button class="link" type="button" id="chat-clear" aria-label="Xóa hội thoại">Xóa</button></div>
+<p class="muted">Hỏi cách dùng hoặc tìm phòng. Tránh nhập mật khẩu/thông tin nhạy cảm. Nội dung AI có thể sai; kiểm tra chi tiết phòng trước khi thuê.</p>
+<div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+<form id="chat-form">
+<label for="chat-question">Câu hỏi</label>
+<div class="chat-input"><input id="chat-question" name="question" maxlength="800" required placeholder="Ví dụ: Phòng ở Hà Nội dưới 3 triệu?"><button type="submit">Gửi</button></div>
+</form>
+</section>
+</details>
 <div class="container">
 <a class="brand" th:href="@{/}">trọ<span>việt</span>
 </a>
